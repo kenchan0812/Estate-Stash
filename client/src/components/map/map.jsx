@@ -1,3 +1,4 @@
+// @ts-ignore
 import React from "react";
 import "./map.scss";
 import {
@@ -12,12 +13,17 @@ import { useState, useEffect } from "react";
 
 const Map = ({ items }) => {
   const [selectedPlace, setSelectedPlace] = useState("");
+  const defaultLatitude = 14.5995;
+  const defaultLongitude = 120.9842;
+
   const [center, setCenter] = useState({
-    lat: items[0].latitude,
-    lng: items[0].longitude,
+    lat: items.length > 0 ? items[0].latitude : defaultLatitude,
+    lng: items.length > 0 ? items[0].longitude : defaultLongitude,
   });
+
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
+    // @ts-ignore
     googleMapsApiKey: import.meta.env.VITE_MAP_KEY,
   });
 
@@ -47,7 +53,7 @@ const Map = ({ items }) => {
   return (
     <>
       {isLoaded && (
-        <GoogleMap zoom={9} center={center} mapContainerClassName="map">
+        <GoogleMap zoom={8} center={center} mapContainerClassName="map">
           {items.map((item) => (
             <MarkerF
               key={item.id}
@@ -60,7 +66,9 @@ const Map = ({ items }) => {
           {selectedPlace && (
             <InfoWindowF
               position={{
+                // @ts-ignore
                 lat: selectedPlace.latitude,
+                // @ts-ignore
                 lng: selectedPlace.longitude,
               }}
               zIndex={1}
@@ -69,13 +77,40 @@ const Map = ({ items }) => {
               }}
             >
               <div className="popupContainer">
-                <img src={selectedPlace.img} alt="" />
+                <img
+                  src={
+                    // @ts-ignore
+                    selectedPlace.img
+                  }
+                  alt=""
+                />
                 <div className="textContainer">
-                  <Link to={`/${selectedPlace.id}`} className="title">
-                    {selectedPlace.title}
+                  <Link
+                    to={`/${
+                      // @ts-ignore
+                      selectedPlace.id
+                    }`}
+                    className="title"
+                  >
+                    {
+                      // @ts-ignore
+                      selectedPlace.title
+                    }
                   </Link>
-                  <span>selectedPlace.bedroom</span>
-                  <b>$ {selectedPlace.price}</b>
+                  <span>
+                    {
+                      // @ts-ignore
+                      selectedPlace.bedroom
+                    }{" "}
+                    bedroom
+                  </span>
+                  <b>
+                    ${" "}
+                    {
+                      // @ts-ignore
+                      selectedPlace.price
+                    }
+                  </b>
                 </div>
               </div>
             </InfoWindowF>
